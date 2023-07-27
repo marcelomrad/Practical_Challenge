@@ -1,11 +1,11 @@
 package com.example.practical_challenge.stepDefinition;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.pt.*;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -18,7 +18,7 @@ public class LoginSteps {
     private WebDriver driver;
     private static final Logger logger = Logger.getLogger(LoginSteps.class.getName());
 
-    @BeforeEach
+    @Before
     public void setupChromeDriver() {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
         System.setProperty("webdriver.chrome.silentOutput", "true");
@@ -31,17 +31,9 @@ public class LoginSteps {
         logger.info("Teste iniciado");
     }
 
-    @AfterEach
-    public void tearDown() {
-        if(driver != null){
-            driver.quit();
-            logger.info("Teste finalizado");
-        }
-    }
 
     @Dado("que o usuario esteja na página de login")
     public void usuarioEstejaPaginaLogin() {
-        setupChromeDriver();
         driver.get("http://www.automationpractice.pl/index.php?controller=authentication&back=my-account");
     }
 
@@ -142,6 +134,14 @@ public class LoginSteps {
     public void usuarioVeMensagemDeSucesso(String sucesso) {
         String alert = driver.findElement(By.cssSelector(".alert.alert-success")).getText();
         Assertions.assertEquals(sucesso, alert);
+    }
+
+    @After
+    public void tearDown() {
+        if(driver != null){
+            driver.quit();
+            logger.info("Teste finalizado");
+        }
     }
 
 }
